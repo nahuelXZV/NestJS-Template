@@ -5,13 +5,16 @@ import { DataSourceConfig } from './config/data.source';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ProvidersModule } from './providers/providers.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({ ...DataSourceConfig }),
     UsersModule,
-    AuthModule
+    AuthModule,
+    CommonModule,
+    ProvidersModule,
   ],
 })
 export class AppModule { }

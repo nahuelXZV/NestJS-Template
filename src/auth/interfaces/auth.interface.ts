@@ -6,7 +6,7 @@ export interface PayloadI {
 }
 
 export interface AuthI {
-    username: string;
+    email: string;
     password: string;
 }
 

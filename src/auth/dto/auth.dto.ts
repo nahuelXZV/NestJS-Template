@@ -1,15 +1,16 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsEmail } from "class-validator";
 import { AuthI } from "../interfaces/auth.interface";
 
 export class AuthDTO implements AuthI {
     @ApiProperty({
-        example: 'johnDoe || johnDoe@live.com',
+        example: 'johnDoe@live.com',
         type: String,
-        description: 'Nombre de usuario o correo electrónico'
+        description: 'Correo electrónico'
     })
     @IsNotEmpty()
-    username: string;
+    @IsEmail()
+    email: string;
 
     @ApiProperty({
         example: '123456',

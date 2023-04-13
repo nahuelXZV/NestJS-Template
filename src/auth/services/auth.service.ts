@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/services/users.service';
 import * as bcrypt from 'bcrypt';
+import { InternalServerErrorException, NotFoundException } from '@nestjs/common/exceptions';
 import * as jwt from 'jsonwebtoken';
+
 import { UsersEntity } from 'src/users/entities/users.entity';
+import { UsersService } from 'src/users/services/users.service';
 import { PayloadI } from '../interfaces/auth.interface';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -12,14 +13,14 @@ export class AuthService {
         private readonly usersService: UsersService,
     ) { }
 
-    public async validateUser(username: string, password: string): Promise<any> {
-        const userByUserName = await this.usersService.findBy({ key: 'username', value: username });
-        const userByEmail = await this.usersService.findBy({ key: 'email', value: username });
-        const user = userByUserName || userByEmail;
-        if (user && await bcrypt.compare(password, user.password)) {
-            return user;
+    public async validateUser(email: string, password: string): Promise<any> {
+        try {
+            const user = await this.usersService.findBy({ key: 'email', value: email });
+            if (!user || !await bcrypt.compare(password, user.password)) throw new NotFoundException('Usuario o contraseña incorrectos');
+            return this.generateJWT(user);
+        } catch (error) {
+            throw new InternalServerErrorException('Error al validar el usuario.');
         }
-        return null;
     }
 
 
@@ -40,13 +41,8 @@ export class AuthService {
         };
     }
 
-    public async recoverPassword(username: string): Promise<any> {
-        const userByUserName = await this.usersService.findBy({ key: 'username', value: username });
-        const userByEmail = await this.usersService.findBy({ key: 'email', value: username });
-        const user = userByUserName || userByEmail;
-        if (!user) {
-            throw new NotFoundError('User not found');
-        }
+    public async recoverPassword(email: string): Promise<any> {
+        const user = await this.usersService.findBy({ key: 'email', value: email });
         const payload: PayloadI = {
             sub: user.id,
             role: user.role

@@ -14,12 +14,8 @@ export class AuthController {
     ) { }
 
     @Post('login')
-    public async login(@Body() { username, password }: AuthDTO) {
-        const user = await this.authService.validateUser(username, password);
-        if (user) {
-            return this.authService.generateJWT(user);
-        }
-        throw new UnauthorizedException('Invalid credentials');
+    public async login(@Body() { email, password }: AuthDTO) {
+        return this.authService.validateUser(email, password);
     }
 
     // recover password

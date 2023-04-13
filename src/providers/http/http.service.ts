@@ -1,7 +1,6 @@
 import { HttpService } from '@nestjs/axios/dist';
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { ErrorManager } from 'src/utils/error.manager';
 
 @Injectable()
 export class HttpCustomService {
@@ -15,7 +14,7 @@ export class HttpCustomService {
             const response = await firstValueFrom(this.httpService.get(url));
             return response.data;
         } catch (error) {
-            throw ErrorManager.createSignatureError(error.message);
+            throw new InternalServerErrorException('Error al obtener los datos');
         }
     }
 
