@@ -1,58 +1,49 @@
-import { Body, Controller, Post, Get, Put, Delete, Param, UseGuards, ParseUUIDPipe } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger/dist';
-import { UpdateResult } from 'typeorm';
+import { Body, Controller, Post, Get, Put, Delete, Param, UseGuards, ParseUUIDPipe, Query, } from '@nestjs/common';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger/dist';
 
 import { RolesAccess } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { UserDTO, UserUpdateDTO } from '../dto/';
+import { CreateUserDto, UpdateUserDto } from '../dto/';
 import { UsersEntity } from '../entities/users.entity';
-import { UsersService } from '../services/users.service';
-import { PublicAccess } from 'src/auth/decorators';
+import { UserService } from '../services/users.service';
+import { QueryDto } from 'src/common/dto/query.dto';
+import { DeleteMessage } from 'src/common/interfaces/delete-message.interface';
 
 @ApiTags('Users')
-@Controller('users')
+@Controller('user')
 @UseGuards(AuthGuard, RolesGuard)
 export class UsersController {
+  constructor(private readonly userService: UserService) { }
 
-    constructor(
-        private readonly usersService: UsersService
-    ) { }
+  @Post()
+  public async createUser(@Body() createUserDto: CreateUserDto,): Promise<UsersEntity> {
+    return await this.userService.createUser(createUserDto);
+  }
 
-    // @RolesAccess('ADMIN')
-    @PublicAccess()
-    @ApiBearerAuth()
-    @Post()
-    public async createUser(@Body() body: UserDTO): Promise<UsersEntity> {
-        return await this.usersService.createUser(body);
-    }
+  @ApiQuery({ name: 'limit', type: 'number', required: false })
+  @ApiQuery({ name: 'offset', type: 'number', required: false })
+  @Get()
+  public async findAll(@Query() queryDto: QueryDto): Promise<UsersEntity[]> {
+    return await this.userService.findAll(queryDto);
+  }
 
-    @ApiBearerAuth()
-    @Get()
-    public async findAll(): Promise<UsersEntity[]> {
-        return await this.usersService.findAll();
-    }
+  @ApiParam({ name: 'id', type: 'string' })
+  @Get(':id')
+  public async findOne(@Param('id', ParseUUIDPipe) id: string,): Promise<UsersEntity> {
+    return await this.userService.findOne(id);
+  }
 
-    @ApiParam({ name: 'id', type: 'string' })
-    @ApiBearerAuth()
-    @Get(':id')
-    public async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<UsersEntity> {
-        return await this.usersService.findOne(id);
-    }
+  @ApiParam({ name: 'id', type: 'string' })
+  @Put(':id')
+  public async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto,): Promise<UsersEntity> {
+    return await this.userService.update(id, updateUserDto);
+  }
 
-    @ApiParam({ name: 'id', type: 'string' })
-    @ApiBearerAuth()
-    @Put(':id')
-    public async update(@Param('id', ParseUUIDPipe) id: string, @Body() body: UserUpdateDTO): Promise<UserUpdateDTO> {
-        return await this.usersService.update(id, body);
-    }
-
-    @RolesAccess('ADMIN')
-    @ApiParam({ name: 'id', type: 'string' })
-    @ApiBearerAuth()
-    @Delete(':id')
-    public async delete(@Param('id', ParseUUIDPipe) id: string): Promise<{}> {
-        return await this.usersService.delete(id);
-    }
-
+  @RolesAccess('ADMIN')
+  @ApiParam({ name: 'id', type: 'string' })
+  @Delete(':id')
+  public async delete(@Param('id', ParseUUIDPipe) id: string,): Promise<DeleteMessage> {
+    return await this.userService.delete(id);
+  }
 }

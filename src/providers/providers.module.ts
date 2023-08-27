@@ -9,4 +9,4 @@ import { HttpCustomService } from './http/http.service';
   providers: [HttpCustomService],
   exports: [HttpCustomService, HttpModule],
 })
-export class ProvidersModule { }
+export class ProvidersModule {}

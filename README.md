@@ -9,22 +9,36 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Instalación
 
 ```bash
 $ npm install
+```
+
+## Variables de entorno
+
+```bash
+$ copiar el .env.example y renombrarlo .env, luego configurar las variables de entorno en el archivo .env
+```
+
+## Migrations
+
+```bash
+# create migrations
+$ npm run m:gen -- ./src/migrations/init
+
+# run migrations
+$ npm run m:run
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
 
 # production mode
+$ npm run start
 $ npm run start:prod
 ```
 
@@ -41,15 +55,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Migrations
 
-```bash
-# create migrations
-$ npm run m:gen -- ./src/migrations/init
-
-# run migrations
-$ npm run m:run
-```
 
 ## License
 

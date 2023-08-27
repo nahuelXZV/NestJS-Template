@@ -7,22 +7,22 @@ import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
 import { DocumentBuilder } from '@nestjs/swagger';
 import { SwaggerModule } from '@nestjs/swagger/dist';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(morgan('dev')); // Log all requests to the console
   app.setGlobalPrefix('api'); // Set the global prefix for all routes
   app.enableCors(CORS_OPTIONS); // Enable CORS
-  app.useGlobalPipes(new ValidationPipe({
-    transformOptions: {
-      enableImplicitConversion: true,
-    }
-  })); // Enable validation
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  ); // Enable validation
 
   const reflector = app.get('Reflector');
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector)); // Enable transformation
-
 
   const configService = app.get(ConfigService);
   const port = configService.get('PORT');
@@ -32,7 +32,9 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle(title)
-    .setDescription('Template with authentication and authorization using JWT and Swagger documentation with NestJS and TypeORM')
+    .setDescription(
+      'Template with authentication and authorization using JWT and Swagger documentation with NestJS and TypeORM',
+    )
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
