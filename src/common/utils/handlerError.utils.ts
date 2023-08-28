@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { BadRequestException, InternalServerErrorException, Logger } from '@nestjs/common';
 
 export const handlerError = (error: any, logger: Logger): any => {
   logger.error(error.message);

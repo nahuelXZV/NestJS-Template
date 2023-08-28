@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { BadRequestException, Injectable, Logger, UnauthorizedException, } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, UnauthorizedException, } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -48,10 +48,7 @@ export class UserService {
     }
   }
 
-  public async update(
-    id: string,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UsersEntity> {
+  public async update(id: string, updateUserDto: UpdateUserDto,): Promise<UsersEntity> {
     try {
       if (updateUserDto.password) updateUserDto.password = await this.encryptPassword(updateUserDto.password,);
       const user: UsersEntity = await this.findOne(id);

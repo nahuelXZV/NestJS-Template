@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      # target: ${STAGE}
+      dockerfile: Dockerfile
+    image: ${DOCKER_IMAGE}:${APP_VERSION}
+    container_name: ${APP_NAME}
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - APP_NAME=${APP_NAME}
+      - APP_PROD=${APP_PROD}
+      - APP_VERSION=${APP_VERSION}
+      - DOCKER_IMAGE=${DOCKER_IMAGE}
+      - STAGE=${STAGE}
+      - PORT=${PORT}
+      - APP_URL=${APP_URL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - HASH_SALT=${HASH_SALT}
+      - JWT_AUTH=${JWT_AUTH}
+      - JWT_RECOVERY=${JWT_RECOVERY}
+
+  db:
+    image: postgres:14.3
+    restart: always
+    ports:
+      - "5440:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    container_name: ${DB_DATABASE}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+
+volumes:
+  postgres-db:
+    external: false
