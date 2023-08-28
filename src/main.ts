@@ -33,7 +33,7 @@ async function bootstrap() {
     .addBearerAuth()
     .setTitle(title)
     .setDescription(
-      'Template with authentication and authorization using JWT and Swagger documentation with NestJS and TypeORM',
+      'Template para iniciar un proyecto con NestJS, TypeORM, Postgres, Swagger, Passport, JWT, Docker, etc.',
     )
     .setVersion('1.0')
     .build();

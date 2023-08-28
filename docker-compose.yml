@@ -4,7 +4,6 @@ services:
   app:
     build:
       context: .
-      # target: ${STAGE}
       dockerfile: Dockerfile
     image: ${DOCKER_IMAGE}:${APP_VERSION}
     container_name: ${APP_NAME}
@@ -15,7 +14,6 @@ services:
       - APP_PROD=${APP_PROD}
       - APP_VERSION=${APP_VERSION}
       - DOCKER_IMAGE=${DOCKER_IMAGE}
-      - STAGE=${STAGE}
       - PORT=${PORT}
       - APP_URL=${APP_URL}
       - FRONTEND_URL=${FRONTEND_URL}
