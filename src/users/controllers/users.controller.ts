@@ -1,10 +1,10 @@
-import { Body, Controller, Post, Get, Put, Delete, Param, UseGuards, ParseUUIDPipe, Query, } from '@nestjs/common';
+import { Body, Controller, Get, Delete, Param, UseGuards, ParseUUIDPipe, Query, Patch, } from '@nestjs/common';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger/dist';
 
 import { RolesAccess } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { CreateUserDto, UpdateUserDto } from '../dto/';
+import { UpdateUserDto } from '../dto/';
 import { UsersEntity } from '../entities/users.entity';
 import { UserService } from '../services/users.service';
 import { QueryDto } from 'src/common/dto/query.dto';
@@ -16,11 +16,6 @@ import { DeleteMessage } from 'src/common/interfaces/delete-message.interface';
 export class UsersController {
   constructor(private readonly userService: UserService) { }
 
-  @Post()
-  public async createUser(@Body() createUserDto: CreateUserDto,): Promise<UsersEntity> {
-    return await this.userService.createUser(createUserDto);
-  }
-
   @ApiQuery({ name: 'limit', type: 'number', required: false })
   @ApiQuery({ name: 'offset', type: 'number', required: false })
   @Get()
@@ -30,20 +25,20 @@ export class UsersController {
 
   @ApiParam({ name: 'id', type: 'string' })
   @Get(':id')
-  public async findOne(@Param('id', ParseUUIDPipe) id: string,): Promise<UsersEntity> {
+  public async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<UsersEntity> {
     return await this.userService.findOne(id);
   }
 
   @ApiParam({ name: 'id', type: 'string' })
-  @Put(':id')
-  public async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto,): Promise<UsersEntity> {
+  @Patch(':id')
+  public async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto): Promise<UsersEntity> {
     return await this.userService.update(id, updateUserDto);
   }
 
   @RolesAccess('ADMIN')
   @ApiParam({ name: 'id', type: 'string' })
   @Delete(':id')
-  public async delete(@Param('id', ParseUUIDPipe) id: string,): Promise<DeleteMessage> {
+  public async delete(@Param('id', ParseUUIDPipe) id: string): Promise<DeleteMessage> {
     return await this.userService.delete(id);
   }
 }

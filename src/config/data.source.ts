@@ -17,12 +17,12 @@ export const DataSourceConfig: DataSourceOptions = {
   // synchronize: configService.get('APP_PROD') === 'true' ? true : false,
   synchronize: true,
   logging: false,
-  ssl: configService.get('APP_PROD') === 'true' ? true : false,
   extra: {
     ssl:
       configService.get('APP_PROD') === 'true'
         ? { rejectUnauthorized: false }
         : null,
+    timezone: 'America/La_Paz'
   },
   namingStrategy: new SnakeNamingStrategy(),
 };

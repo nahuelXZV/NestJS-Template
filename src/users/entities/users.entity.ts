@@ -3,7 +3,7 @@ import { Column } from 'typeorm/decorator/columns/Column';
 import { Exclude } from 'class-transformer';
 
 import { BaseEntity } from '../../common/entities/base.entity';
-import { ROLES } from '../../constants';
+import { ROLES } from '../../common/constants';
 import { IUser } from '../interfaces/user.interface';
 
 @Entity({ name: 'user' })

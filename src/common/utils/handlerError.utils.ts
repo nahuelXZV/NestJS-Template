@@ -1,7 +1,7 @@
 import { BadRequestException, InternalServerErrorException, Logger } from '@nestjs/common';
 
 export const handlerError = (error: any, logger: Logger): any => {
-  logger.error(error.message);
+  logger.error(error);
   if (error.code === '23505') throw new BadRequestException(error.detail);
   if (error.code === '22P02') throw new BadRequestException('El id no es válido.');
   if (error.code === '23503') throw new BadRequestException('El id no existe.');
@@ -9,5 +9,5 @@ export const handlerError = (error: any, logger: Logger): any => {
   if (error.code === '22001') throw new BadRequestException('El campo es demasiado largo.');
   if (error.code === '22003') throw new BadRequestException('El campo es demasiado corto.');
   if (error.code === '22007') throw new BadRequestException('El campo no es una fecha.');
-  throw new InternalServerErrorException('Error interno del servidor.');
+  throw new InternalServerErrorException(error);
 };

@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, UnauthorizedException, } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, UnauthorizedException, } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -31,7 +31,7 @@ export class UserService {
 
   public async createUser(createUserDto: CreateUserDto): Promise<UsersEntity> {
     try {
-      createUserDto.password = await this.encryptPassword(createUserDto.password,);
+      createUserDto.password = await this.encryptPassword(createUserDto.password);
       const user: UsersEntity = await this.userRepository.save(createUserDto);
       return user;
     } catch (error) {
@@ -41,7 +41,7 @@ export class UserService {
 
   public async findOne(id: string): Promise<UsersEntity> {
     try {
-      const user: UsersEntity = await this.userRepository.findOneOrFail({ where: { id }, });
+      const user: UsersEntity = await this.userRepository.findOneOrFail({ where: { id } });
       return user;
     } catch (error) {
       handlerError(error, this.logger);
@@ -50,11 +50,12 @@ export class UserService {
 
   public async update(id: string, updateUserDto: UpdateUserDto,): Promise<UsersEntity> {
     try {
-      if (updateUserDto.password) updateUserDto.password = await this.encryptPassword(updateUserDto.password,);
+      if (updateUserDto.password) updateUserDto.password = await this.encryptPassword(updateUserDto.password);
       const user: UsersEntity = await this.findOne(id);
       const userUpdated = await this.userRepository.update(user.id, updateUserDto,);
       if (userUpdated.affected === 0) throw new BadRequestException('Usuario no actualizado.');
-      return user;
+      const userFind: UsersEntity = await this.findOne(id);
+      return userFind;
     } catch (error) {
       handlerError(error, this.logger);
     }

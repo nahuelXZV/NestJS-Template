@@ -7,14 +7,6 @@ export abstract class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    type: 'boolean',
-    default: false,
-    name: 'is_deleted',
-    select: false,
-  })
-  isDeleted: boolean;
-
   @CreateDateColumn({
     type: 'timestamp',
     name: 'created_at',

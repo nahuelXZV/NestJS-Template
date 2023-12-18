@@ -1,4 +1,5 @@
 import * as jwt from 'jsonwebtoken';
+
 import { AuthTokenResult } from 'src/auth/interfaces/auth.interface';
 import { IUserToken } from 'src/auth/interfaces/userToken.interface';
 

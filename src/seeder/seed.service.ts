@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { handlerError } from 'src/common/utils/handlerError.utils';
 
-import { ROLES } from 'src/constants';
+import { ROLES } from 'src/common/constants';
 import { CreateUserDto } from 'src/users/dto';
 import { UserService } from 'src/users/services/users.service';
 

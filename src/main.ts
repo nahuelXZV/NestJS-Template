@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import { CORS_OPTIONS } from './constants';
+import { CORS_OPTIONS } from './common/constants';
 import * as morgan from 'morgan';
 import { ValidationPipe, ClassSerializerInterceptor } from '@nestjs/common';
 import { DocumentBuilder } from '@nestjs/swagger';
@@ -32,9 +32,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle(title)
-    .setDescription(
-      'Template para iniciar un proyecto con NestJS, TypeORM, Postgres, Swagger, Passport, JWT, Docker, etc.',
-    )
+    .setDescription('Template para iniciar un proyecto con NestJS, TypeORM, Postgres, Swagger, Passport, JWT, Docker, etc.')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
