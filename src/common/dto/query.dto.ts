@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
-import { IsOptional, IsPositive, Min } from 'class-validator';
+import { IsEnum, IsOptional, IsPositive, IsString, Min } from 'class-validator';
+import { ORDER, ORDER_ENUM } from '../constants';
 
 export class QueryDto {
   @IsOptional()
@@ -11,4 +12,15 @@ export class QueryDto {
   @Min(0)
   @Type(() => Number) // enableImplicitConversions: true
   offset?: number;
+
+  @IsOptional()
+  @IsEnum(ORDER_ENUM)
+  order?: ORDER;
+
+  @IsString()
+  @IsOptional()
+  attr: string;
+
+  @IsOptional()
+  value: string;
 }

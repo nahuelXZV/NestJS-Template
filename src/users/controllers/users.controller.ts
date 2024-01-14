@@ -1,9 +1,8 @@
 import { Body, Controller, Get, Delete, Param, UseGuards, ParseUUIDPipe, Query, Patch, } from '@nestjs/common';
-import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger/dist';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger/dist';
 
 import { RolesAccess } from 'src/auth/decorators/roles.decorator';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { AuthGuard, RolesGuard } from 'src/auth/guards/';
 import { UpdateUserDto } from '../dto/';
 import { UsersEntity } from '../entities/users.entity';
 import { UserService } from '../services/users.service';
@@ -11,8 +10,9 @@ import { QueryDto } from 'src/common/dto/query.dto';
 import { DeleteMessage } from 'src/common/interfaces/delete-message.interface';
 
 @ApiTags('Users')
-@Controller('user')
+@ApiBearerAuth()
 @UseGuards(AuthGuard, RolesGuard)
+@Controller('user')
 export class UsersController {
   constructor(private readonly userService: UserService) { }
 
@@ -31,7 +31,9 @@ export class UsersController {
 
   @ApiParam({ name: 'id', type: 'string' })
   @Patch(':id')
-  public async update(@Param('id', ParseUUIDPipe) id: string, @Body() updateUserDto: UpdateUserDto): Promise<UsersEntity> {
+  public async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateUserDto: UpdateUserDto): Promise<UsersEntity> {
     return await this.userService.update(id, updateUserDto);
   }
 

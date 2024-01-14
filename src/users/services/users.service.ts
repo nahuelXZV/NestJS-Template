@@ -18,12 +18,15 @@ export class UserService {
     private readonly userRepository: Repository<UsersEntity>,
   ) { }
 
-  public async findAll(query: QueryDto): Promise<UsersEntity[]> {
+  public async findAll(queryDto: QueryDto): Promise<UsersEntity[]> {
     try {
-      const { limit, offset } = query;
-      if (limit && offset) return await this.userRepository.find({ take: limit, skip: offset });
-      if (limit) return await this.userRepository.find({ take: limit });
-      return await this.userRepository.find();
+      const { limit, offset, order, attr, value } = queryDto;
+      const query = this.userRepository.createQueryBuilder('user');
+      if (limit) query.take(limit);
+      if (offset) query.skip(offset);
+      if (order) query.orderBy('user.createdAt', order.toLocaleUpperCase() as any);
+      if (attr && value) query.where(`user.${attr} ILIKE :value`, { value: `%${value}%` });
+      return await query.getMany();
     } catch (error) {
       handlerError(error, this.logger);
     }
@@ -32,8 +35,7 @@ export class UserService {
   public async createUser(createUserDto: CreateUserDto): Promise<UsersEntity> {
     try {
       createUserDto.password = await this.encryptPassword(createUserDto.password);
-      const user: UsersEntity = await this.userRepository.save(createUserDto);
-      return user;
+      return await this.userRepository.save(createUserDto);
     } catch (error) {
       handlerError(error, this.logger);
     }
@@ -41,8 +43,7 @@ export class UserService {
 
   public async findOne(id: string): Promise<UsersEntity> {
     try {
-      const user: UsersEntity = await this.userRepository.findOneOrFail({ where: { id } });
-      return user;
+      return await this.userRepository.findOneOrFail({ where: { id } });
     } catch (error) {
       handlerError(error, this.logger);
     }
@@ -54,8 +55,7 @@ export class UserService {
       const user: UsersEntity = await this.findOne(id);
       const userUpdated = await this.userRepository.update(user.id, updateUserDto,);
       if (userUpdated.affected === 0) throw new BadRequestException('Usuario no actualizado.');
-      const userFind: UsersEntity = await this.findOne(id);
-      return userFind;
+      return await this.findOne(id);
     } catch (error) {
       handlerError(error, this.logger);
     }
@@ -74,8 +74,7 @@ export class UserService {
 
   public async findOneBy({ key, value, }: { key: keyof CreateUserDto; value: any; }) {
     try {
-      const user: UsersEntity = await this.userRepository.findOneOrFail({ where: { [key]: value } });
-      return user;
+      return await this.userRepository.findOneOrFail({ where: { [key]: value } });
     } catch (error) {
       handlerError(error, this.logger);
     }

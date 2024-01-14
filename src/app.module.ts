@@ -12,10 +12,10 @@ import { SeederModule } from './seeder/seeder.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     TypeOrmModule.forRoot({ ...DataSourceConfig }),
+    ProvidersModule,
+    CommonModule,
     UsersModule,
     AuthModule,
-    CommonModule,
-    ProvidersModule,
     SeederModule,
   ],
 })

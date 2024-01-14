@@ -22,7 +22,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) { }
 
-  public async validateUser(email: string, password: string): Promise<any> {
+  public async login(email: string, password: string): Promise<any> {
     try {
       const user = await this.userService.findOneBy({ key: 'email', value: email, });
       if (!user || !(await bcrypt.compare(password, user.password))) throw new NotFoundException('Usuario o contraseña incorrectos');
@@ -32,7 +32,7 @@ export class AuthService {
     }
   }
 
-  async checkToken(token: string) {
+  public async checkToken(token: string) {
     try {
       const managerToken: IUserToken | string = userToken(token);
       if (typeof managerToken === 'string') return false;
@@ -44,9 +44,9 @@ export class AuthService {
     }
   }
 
-  register(createUserDto: CreateUserDto) {
+  public async register(createUserDto: CreateUserDto) {
     try {
-      return this.userService.createUser(createUserDto);
+      return await this.userService.createUser(createUserDto);
     } catch (error) {
       handlerError(error, this.logger);
     }
