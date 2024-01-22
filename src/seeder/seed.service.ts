@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { handlerError } from 'src/common/utils/handlerError.utils';
 
-import { ROLES } from 'src/common/constants';
-import { CreateUserDto } from 'src/users/dto';
-import { UserService } from 'src/users/services/users.service';
+import { handlerError } from '../common/utils/handlerError.utils';
+import { ROLES } from '../common/constants';
+import { CreateUserDto } from '../users/dto';
+import { UserService } from '../users/services/users.service';
 
 @Injectable()
 export class SeedService {

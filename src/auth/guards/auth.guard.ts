@@ -2,8 +2,8 @@ import { CanActivate, ExecutionContext, Injectable, InternalServerErrorException
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 
-import { UserService } from 'src/users/services/users.service';
-import { userToken } from 'src/common/utils/user.token';
+import { UserService } from '../../users/services/users.service';
+import { userToken } from '../../common/utils/user.token';
 import { IUserToken } from '../interfaces/userToken.interface';
 
 @Injectable()

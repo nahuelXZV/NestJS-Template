@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsOptional, IsPositive, IsString, Min } from 'class-validator';
+
 import { ORDER, ORDER_ENUM } from '../constants';
 
 export class QueryDto {

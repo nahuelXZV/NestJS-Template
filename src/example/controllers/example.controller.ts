@@ -2,14 +2,14 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards, Pa
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { ExampleService } from '../services/example.service';
-import { AuthGuard, RolesGuard } from 'src/auth/guards';
+import { AuthGuard, RolesGuard } from '../../auth/guards';
 import { CreateExampleDto } from '../dto/create-example.dto';
-import { QueryDto } from 'src/common/dto/query.dto';
+import { QueryDto } from '../../common/dto/query.dto';
 import { UpdateExampleDto } from '../dto/update-example.dto';
 import { ExampleEntity } from '../entities/example.entity';
-import { DeleteMessage } from 'src/common/interfaces/delete-message.interface';
-import { RolesAccess } from 'src/auth/decorators';
-import { ORDER_ENUM } from 'src/common/constants';
+import { DeleteMessage } from '../../common/interfaces/delete-message.interface';
+import { RolesAccess } from '../../auth/decorators';
+import { ORDER_ENUM } from '../../common/constants';
 
 @ApiTags('Example')
 @ApiBearerAuth()

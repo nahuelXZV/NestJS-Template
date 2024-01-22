@@ -1,4 +1,4 @@
-import { ROLES } from 'src/common/constants';
+import { ROLES } from '../../common/constants';
 
 export interface IPayload {
   sub: string;

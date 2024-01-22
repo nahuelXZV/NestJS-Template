@@ -3,7 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 
-import { ADMIN_KEY, ROLES, ROLES_KEY } from 'src/common/constants';
+import { ADMIN_KEY, ROLES, ROLES_KEY } from '../../common/constants';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

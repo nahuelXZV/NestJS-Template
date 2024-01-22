@@ -4,13 +4,13 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
-import { UsersEntity } from 'src/users/entities/users.entity';
-import { UserService } from 'src/users/services/users.service';
+import { UsersEntity } from '../../users/entities/users.entity';
+import { UserService } from '../../users/services/users.service';
 import { IPayload } from '../interfaces/payload.interface';
-import { userToken } from 'src/common/utils/user.token';
+import { userToken } from '../../common/utils/user.token';
 import { IUserToken } from '../interfaces/userToken.interface';
-import { CreateUserDto } from 'src/users/dto';
-import { handlerError } from 'src/common/utils/handlerError.utils';
+import { CreateUserDto } from '../../users/dto';
+import { handlerError } from '../../common/utils/handlerError.utils';
 
 @Injectable()
 export class AuthService {
@@ -44,12 +44,8 @@ export class AuthService {
     }
   }
 
-  public async register(createUserDto: CreateUserDto) {
-    try {
-      return await this.userService.createUser(createUserDto);
-    } catch (error) {
-      handlerError(error, this.logger);
-    }
+  public async register(createUserDto: CreateUserDto): Promise<UsersEntity> {
+    return await this.userService.createUser(createUserDto);
   }
 
   public singJWT({ payload, secret, expiresIn, }: { payload: jwt.JwtPayload; secret: string; expiresIn: number | string; }) {

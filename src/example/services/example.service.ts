@@ -5,9 +5,9 @@ import { Repository } from 'typeorm';
 import { CreateExampleDto } from '../dto/create-example.dto';
 import { UpdateExampleDto } from '../dto/update-example.dto';
 import { ExampleEntity } from '../entities/example.entity';
-import { QueryDto } from 'src/common/dto/query.dto';
-import { DeleteMessage } from 'src/common/interfaces/delete-message.interface';
-import { handlerError } from 'src/common/utils/handlerError.utils';
+import { QueryDto } from '../../common/dto/query.dto';
+import { DeleteMessage } from '../../common/interfaces/delete-message.interface';
+import { handlerError } from '../../common/utils/handlerError.utils';
 
 @Injectable()
 export class ExampleService {
